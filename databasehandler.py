@@ -19,6 +19,19 @@ class Card(Base):
     def __repr__(self) -> str:
         return self.__dict__.__str__()
 
+    def to_json(self):
+        return {
+            'id': self.id,
+            'original': self.word_original,
+            'meaning': self.word_meaning,
+            'counter':
+                {
+                    'total': self.counter,
+                    'incorrect': self.counter_incorrect
+                },
+            'last_visit': self.last_visit.__str__()
+        }
+
 
 class DataBaseHandler:
     DB_FILE = 'vocab.db'
@@ -28,12 +41,21 @@ class DataBaseHandler:
         Base.metadata.create_all(engine)
         self.session = sessionmaker(bind=engine)
 
-    def add_vocab(self, card_entity: Card):
+    def add_card(self, card_entity: Card):
         session = self.session()
         card_entity.last_visit = datetime.now()
         session.add(card_entity)
         session.commit()
 
-    def get_all_words(self):
+    def get_all_cards(self) -> [Card]:
         session = self.session()
         return session.query(Card).order_by(Card.last_visit.desc()).all()
+
+    def get_card_by_id(self, card_id) -> Card:
+        session = self.session()
+        return session.query(Card).get(card_id)
+
+    def delete_card(self, card_id):
+        session = self.session()
+        session.query(Card).filter(Card.id == card_id).delete()
+        session.commit()
