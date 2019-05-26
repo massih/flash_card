@@ -14,6 +14,8 @@ def test(db: DataBaseHandler):
     # TODO remove later
     card = Card(word_original='hej', word_meaning='hello', counter=0, counter_incorrect=0)
     db.add_card(card)
+    card2 = Card(word_original='jätte', word_meaning='gigantic', counter=0, counter_incorrect=0)
+    db.add_card(card2)
     all_words = db.get_all_cards()
     [print(word) for word in all_words]
 
@@ -21,7 +23,7 @@ def test(db: DataBaseHandler):
 def main():
     setup_logging()
     db = DataBaseHandler()
-    # test(db)
+    #test(db)
     card_resource = CardResource(db)
     cards_resource = CardsResources(db)
     app = falcon.API()

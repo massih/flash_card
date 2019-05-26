@@ -1,5 +1,6 @@
-import falcon.response
 import logging
+
+import falcon.response
 
 from databasehandler import DataBaseHandler
 
@@ -32,7 +33,12 @@ class CardsResources:
     def on_get(self, req, resp):
         self.logger.info('received GET call')
         all_cards = self.db.get_all_cards()
+        response = []
+        for card in all_cards:
+            response.append(card.to_json())
+            self.logger.info(f'joining: {response}')
         self.logger.info(all_cards)
+        resp.media = response
         pass
 
     def on_post(self, req, resp):
