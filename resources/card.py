@@ -36,7 +36,6 @@ class CardsResources:
         response = []
         for card in all_cards:
             response.append(card.to_json())
-            self.logger.info(f'joining: {response}')
         self.logger.info(all_cards)
         resp.media = response
         pass
