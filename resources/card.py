@@ -1,8 +1,10 @@
 import logging
 
 import falcon.response
+from falcon.media.validators.jsonschema import validate
 
 from databasehandler import DataBaseHandler
+from schemas import load_schema
 
 
 class CardResource:
@@ -40,6 +42,7 @@ class CardsResources:
         resp.media = response
         pass
 
+    @validate(load_schema('card_creation'))
     def on_post(self, req, resp):
         self.logger.info('received POST call')
-        pass
+        print(req.media)

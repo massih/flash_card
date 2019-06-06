@@ -22,13 +22,10 @@ class Card(Base):
     def to_json(self):
         return {
             'id': self.id,
-            'original': self.word_original,
-            'meaning': self.word_meaning,
-            'counter':
-                {
-                    'total': self.counter,
-                    'incorrect': self.counter_incorrect
-                },
+            'word_original': self.word_original,
+            'word_meaning': self.word_meaning,
+            'counter': self.counter,
+            'counter_incorrect': self.counter_incorrect,
             'last_visit': self.last_visit.__str__()
         }
 
