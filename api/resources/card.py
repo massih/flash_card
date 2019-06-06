@@ -3,8 +3,8 @@ import logging
 import falcon.response
 from falcon.media.validators.jsonschema import validate
 
-from databasehandler import DataBaseHandler
-from schemas import load_schema
+from api.databasehandler import DataBaseHandler
+from api.schemas import load_schema
 
 
 class CardResource:

@@ -1,11 +1,11 @@
-from databasehandler import DataBaseHandler, Card
+from api.databasehandler import DataBaseHandler, Card
 import logging
 from wsgiref import simple_server
 
 import falcon
 
 from logs.setup import setup_logging
-from resources.card import CardsResources, CardResource
+from api.resources.card import CardsResources, CardResource
 
 logger = logging.getLogger(__name__)
 
