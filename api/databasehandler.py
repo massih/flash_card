@@ -12,8 +12,8 @@ class Card(Base):
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
     word_original = Column(String(250), nullable=False)
     word_meaning = Column(String(250), nullable=False)
-    counter = Column(Integer, nullable=False)
-    counter_incorrect = Column(Integer, nullable=False)
+    counter = Column(Integer, nullable=False, default=0)
+    counter_incorrect = Column(Integer, nullable=False, default=0)
     last_visit = Column(DateTime, nullable=False)
 
     def __repr__(self) -> str:
@@ -43,6 +43,7 @@ class DataBaseHandler:
         card_entity.last_visit = datetime.now()
         session.add(card_entity)
         session.commit()
+        return card_entity
 
     def get_all_cards(self) -> [Card]:
         session = self.session()
@@ -56,3 +57,15 @@ class DataBaseHandler:
         session = self.session()
         session.query(Card).filter(Card.id == card_id).delete()
         session.commit()
+
+    def update_card(self, card):
+        session = self.session()
+        current_card = session.query(Card).get(card.id)
+        current_card.word_original = card.word_original
+        current_card.word_meaning = card.word_meaning
+        current_card.counter = card.counter
+        current_card.counter_incorrect = card.counter_incorrect
+        current_card.last_visit = card.last_visit
+        session.add(current_card)
+        session.commit()
+        return current_card
