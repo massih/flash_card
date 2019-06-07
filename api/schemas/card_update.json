@@ -3,5 +3,6 @@
   "word_original": "",
   "word_meaning": "",
   "counter": 0,
-  "counter_incorrect": 0
+  "counter_incorrect": 0,
+  "update_last_visit": true
 }

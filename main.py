@@ -4,7 +4,7 @@ from wsgiref import simple_server
 
 import falcon
 
-from logs.setup import setup_logging
+from api.logs.setup import setup_logging
 from api.resources.card import CardsResources, CardResource
 
 logger = logging.getLogger(__name__)
@@ -12,9 +12,9 @@ logger = logging.getLogger(__name__)
 
 def test(db: DataBaseHandler):
     # TODO remove later
-    card = Card(word_original='hej', word_meaning='hello', counter=0, counter_incorrect=0)
+    card = Card(word_original='hej', word_meaning='hello')
     db.add_card(card)
-    card2 = Card(word_original='jätte', word_meaning='gigantic', counter=0, counter_incorrect=0)
+    card2 = Card(word_original='jätte', word_meaning='gigantic')
     db.add_card(card2)
     all_words = db.get_all_cards()
     [print(word) for word in all_words]
