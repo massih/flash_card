@@ -1,0 +1,28 @@
+/* label color */
+.custom-color label {
+    color: #000000;
+}
+
+/* label focus color */
+.custom-color input[type=text]:focus + label {
+    color: #cecece;
+}
+
+/* label underline focus color */
+.custom-color input[type=text]:focus {
+    color: #fafafa;
+    border-bottom: 1px solid #eeeeee;
+    box-shadow: 0 1px 0 0 #eeeeee;
+}
+
+/* valid color */
+.custom-color input[type=text].valid {
+    border-bottom: 1px solid #000;
+    box-shadow: 0 1px 0 0 #000;
+}
+
+/* invalid color */
+.custom-color input[type=text].invalid {
+    border-bottom: 1px solid #000;
+    box-shadow: 0 1px 0 0 #000;
+}
