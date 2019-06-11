@@ -14,7 +14,7 @@ class Button extends Component {
 
     render() {
         return (
-            <button onClick={this.props.onSaveClicked} className={this.get_class_name()}>{this.props.text}</button>
+            <button onClick={this.props.onClick} className={this.get_class_name()}>{this.props.text}</button>
         )
     }
 }

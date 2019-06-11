@@ -1,15 +1,14 @@
 /* label color */
 .custom-color label {
-    color: #000000;
+    color: #cecece;
 }
 
 /* label focus color */
 .custom-color input[type=text]:focus + label {
-    color: #cecece;
+    color: white;
 }
 
-/* label underline focus color */
-.custom-color input[type=text]:focus {
+.custom-color input[type=text] {
     color: #fafafa;
     border-bottom: 1px solid #eeeeee;
     box-shadow: 0 1px 0 0 #eeeeee;
@@ -17,12 +16,12 @@
 
 /* valid color */
 .custom-color input[type=text].valid {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid green;
     box-shadow: 0 1px 0 0 #000;
 }
 
 /* invalid color */
 .custom-color input[type=text].invalid {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid darkred;
     box-shadow: 0 1px 0 0 #000;
 }

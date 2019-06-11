@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 
 import 'materialize-css/dist/css/materialize.min.css'
 
-import M from 'materialize-css/dist/js/materialize.min.js'
+import 'materialize-css/dist/js/materialize.min.js'
 
 ReactDOM.render(<Main />, document.getElementById('root'));
 

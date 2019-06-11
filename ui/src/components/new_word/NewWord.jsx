@@ -3,22 +3,28 @@ import TextField from "../commons/TextField";
 import Button from "../commons/Button";
 
 class NewWord extends Component {
-
+  text_fields = {'word_original': 'Word', 'word_meaning': 'Meaning'};
   state = {};
 
-  handle_save() {
-    console.log('worked :|');
-  }
+  button_onclick = () => {
+    console.log(this.state);
+  };
+
+  textfield_onchange = (textfield, value) => {
+    this.setState({[textfield]: value});
+  };
 
   render() {
     return (
       <div className="col s12">
         <div className="row">
-          <TextField label="Word"/>
-          <TextField label="Meaning"/>
+          {Object.keys(this.text_fields).map(
+            (key, index) => (
+              <TextField key={index} id={key} onChange={this.textfield_onchange} label={this.text_fields[key]}/>
+            ))}
         </div>
         <div className="row">
-          <Button onSaveClicked={this.handle_save} text="Save" color="blue darken-3" large/>
+          <Button onClick={this.button_onclick} text="Save" color="blue darken-3" large/>
         </div>
 
       </div>
