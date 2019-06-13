@@ -8,6 +8,13 @@ class NewWord extends Component {
 
   button_onclick = () => {
     console.log(this.state);
+    fetch('http://localhost:8000/api/cards',{
+      method: 'POST',
+      body: JSON.stringify(this.state),
+      headers:{'Content-Type': 'application/json'}
+    }).then(res => res.json())
+      .then(response => console.log('Success:', JSON.stringify(response)))
+      .catch(error => console.log('Error:', error));
   };
 
   textfield_onchange = (textfield, value) => {
