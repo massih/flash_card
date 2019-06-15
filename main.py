@@ -1,13 +1,17 @@
-from api.databasehandler import DataBaseHandler, Card
 import logging
+import os
 from wsgiref import simple_server
 
 import falcon
 
+from api.databasehandler import DataBaseHandler, Card
 from api.logs.setup import setup_logging
 from api.resources.card import CardsResources, CardResource
 
 logger = logging.getLogger(__name__)
+CWD = os.path.dirname(os.path.realpath(__file__))
+HOST = '127.0.0.1'
+PORT = 8000
 
 
 def test(db: DataBaseHandler):
@@ -22,16 +26,24 @@ def test(db: DataBaseHandler):
 
 def main():
     setup_logging()
+    logger.info('Starting the app')
+
     db = DataBaseHandler()
-    #test(db)
+    build_directory = os.path.join(CWD, 'ui/build')
+    index_file = os.path.join(build_directory, 'index.html')
+    static_files = os.path.join(build_directory, 'static')
+
+    # test(db)
     card_resource = CardResource(db)
     cards_resource = CardsResources(db)
     app = falcon.API()
+    app.add_static_route('/', build_directory, fallback_filename=index_file)
+    app.add_static_route('/static', static_files)
     app.add_route('/api/cards', cards_resource)
     app.add_route('/api/card/{card_id}', card_resource)
-    logger.info('Starting the app')
+    logger.info('Setup is completed!')
 
-    httpd = simple_server.make_server('127.0.0.1', 8000, app)
+    httpd = simple_server.make_server(HOST, PORT, app)
     httpd.serve_forever()
 
 

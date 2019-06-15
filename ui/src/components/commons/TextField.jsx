@@ -18,7 +18,7 @@ class TextField extends Component {
   render() {
     return (
       <div className={this.get_class_name()}>
-        <input id={this.props.id} onChange={this.text_change_handler} type="text" className="validate"/>
+        <input id={this.props.id} value={this.props.value} onChange={this.text_change_handler} type="text" className="validate"/>
         <label htmlFor={this.props.id}>{this.props.label}</label>
       </div>
     );

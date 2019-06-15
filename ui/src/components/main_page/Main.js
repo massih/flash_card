@@ -4,7 +4,7 @@ import './Main.css';
 import Button from "../commons/Button";
 import NewWord from "../new_word/NewWord";
 
-function Main() {
+let Main = () => {
   return (
     <div className="container center-align">
       <div className="row">
@@ -18,6 +18,6 @@ function Main() {
       </div>
     </div>
   );
-}
+};
 
 export default Main;
