@@ -29,11 +29,9 @@ class NewWord extends Component {
   };
 
   clear_textfields() {
-    console.log('before', this.state);
     for (let key in this.state) {
       this.setState({[key]: ''})
     }
-    console.log('after: ', this.state);
   }
 
   render() {
@@ -44,7 +42,7 @@ class NewWord extends Component {
           <TextField id={'word_meaning'} value={this.state.word_meaning} onChange={this.textfield_onchange} label={'Meaning'}/>
         </div>
         <div className="row">
-          <Button onClick={this.button_onclick} text="Save" color="blue darken-3" large/>
+          <Button onClick={this.button_onclick} icon="save" text="Save" color="blue darken-3" large/>
         </div>
 
       </div>
