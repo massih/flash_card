@@ -4,7 +4,11 @@ import React, {Component} from 'react';
 class Button extends Component {
 
     get_icon() {
-        return (this.props.icon) ? <i className="material-icons right">{this.props.icon}</i> : '';
+        let style = 'material-icons';
+        if (this.props.text) {
+            style += ' right';
+        }
+        return (this.props.icon) ? <i className={style}>{this.props.icon}</i> : '';
     }
 
     get_class_name() {

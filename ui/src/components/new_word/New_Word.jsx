@@ -3,7 +3,6 @@ import TextField from "../commons/TextField";
 import Button from "../commons/Button";
 
 class NewWord extends Component {
-  // TODO constructor
 
   constructor(props) {
     super(props);
@@ -21,30 +20,28 @@ class NewWord extends Component {
     }).then(res => res.json())
       .then(response => console.log('Success:', JSON.stringify(response)))
       .catch(error => console.log('Error:', error));
-    this.clear_textfields();
+    this.clearTextfields();
   };
 
-  textfield_onchange = (textfield, value) => {
+  textfieldOnchange = (textfield, value) => {
     this.setState({[textfield]: value});
   };
 
-  clear_textfields() {
-    for (let key in this.state) {
-      this.setState({[key]: ''})
-    }
+  clearTextfields() {
+    this.setState({word_original: ''});
+    this.setState({word_meaning: ''});
   }
 
   render() {
     return (
-      <div className="col s12">
+      <div>
         <div className="row">
-          <TextField id={'word_original'} value={this.state.word_original} onChange={this.textfield_onchange} label={'Word'}/>
-          <TextField id={'word_meaning'} value={this.state.word_meaning} onChange={this.textfield_onchange} label={'Meaning'}/>
+          <TextField id={'word_original'} value={this.state.word_original} onChange={this.textfieldOnchange} label={'Word'}/>
+          <TextField id={'word_meaning'} value={this.state.word_meaning} onChange={this.textfieldOnchange} label={'Meaning'}/>
         </div>
         <div className="row">
-          <Button onClick={this.button_onclick} icon="save" text="Save" color="blue darken-3" large/>
+          <Button onClick={this.button_onclick} icon="save" text="Save" color="teal darken-2" large/>
         </div>
-
       </div>
     )
   }
