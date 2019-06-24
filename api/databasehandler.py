@@ -34,7 +34,7 @@ class DataBaseHandler:
     DB_FILE = 'vocab.db'
 
     def __init__(self, file_name=DB_FILE):
-        engine = create_engine(f'sqlite:///{file_name}', echo=True)
+        engine = create_engine(f'sqlite:///{file_name}', echo=False)
         Base.metadata.create_all(engine)
         self.session = sessionmaker(bind=engine)
 
