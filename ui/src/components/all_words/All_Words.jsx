@@ -1,33 +1,38 @@
 import React, {Component} from 'react';
 import Button from "../commons/Button";
+import {withRouter} from "react-router-dom";
 
 class AllWords extends Component {
+  static FETCH_ALL_CARDS_URL = 'http://localhost:8000/api/cards';
 
   constructor(props) {
     super(props);
     this.state = {};
-    this.headers = ['Word', 'Meaning', 'Actions'];
   }
 
   componentDidMount() {
-    let url = 'http://localhost:8000/api/cards';
-    fetch(url, {
+    fetch(AllWords.FETCH_ALL_CARDS_URL, {
       method: 'GET',
       headers: {'Content-Type': 'application/json'}
     }).then(res => res.json())
-        .then(response => {
-          let tableData = {};
-          response.forEach((row) => {
-            tableData[row.id] = row;
-          });
-          this.setState({'tableData': tableData});
-        })
-        .catch(error => console.log('Error:', error));
+      .then(response => {
+        let tableData = {};
+        response.forEach((row) => {
+          tableData[row.id] = row;
+        });
+        this.setState({'tableData': tableData});
+      })
+      .catch(error => console.log('Error:', error));
   }
 
   editButtonOnclick(rowId) {
     let rowData = this.state.tableData[rowId];
     console.log('edit button clicked with => ', rowData);
+    this.props.history.push(
+      {
+        pathname: '/flashCard',
+        state: {flashCard: rowData}
+      });
     // fetch('http://localhost:8000/api/cards', {
     //   method: 'POST',
     //   body: JSON.stringify(this.state),
@@ -83,40 +88,44 @@ class AllWords extends Component {
 
     if (!Object.keys(this.state.tableData).length) {
       return (
-          <div className="section">
-            <h3>You haven't add any words yet!</h3>
-            <p>Click on "New Word" to start!</p>
-          </div>
+        <div className="section">
+          <h3>You haven't add any words yet!</h3>
+          <p>Click on "New Word" to start!</p>
+        </div>
       );
     }
 
     return (
-        <div className="blue-grey darken-2">
-          <table className="highlight centered responsive-table">
-            <thead>
+      <div className="blue-grey darken-2">
+        <table className="highlight centered responsive-table">
+          <thead>
+          <tr>
+            <th>Word</th>
+            <th>Meaning</th>
+            <th>Incorrect Answers</th>
+            <th>Last Visit</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {Object.keys(this.state.tableData).map((id, index) => (
             <tr>
-              <th>Word</th>
-              <th>Meaning</th>
-              <th>Actions</th>
+              <td>{this.state.tableData[id].word_original}</td>
+              <td>{this.state.tableData[id].word_meaning}</td>
+              <td>{this.state.tableData[id].counter_incorrect}</td>
+              <td>{this.state.tableData[id].last_visit}</td>
+              <td>
+                <Button color="transparent" icon="edit" onClick={() => this.editButtonOnclick(id)}/>
+                <Button color="transparent" icon="delete" onClick={() => this.deleteButtonOnclick(id)}/>
+              </td>
             </tr>
-            </thead>
-            <tbody>
-            {Object.keys(this.state.tableData).map((id, index) => (
-                <tr>
-                  <td>{this.state.tableData[id].word_original}</td>
-                  <td>{this.state.tableData[id].word_meaning}</td>
-                  <td>
-                    <Button color="transparent" icon="edit" onClick={() => this.editButtonOnclick(id)}/>
-                    <Button color="transparent" icon="delete" onClick={() => this.deleteButtonOnclick(id)}/>
-                  </td>
-                </tr>
-            ))
-            }
-            </tbody>
-          </table>
-        </div>
+          ))
+          }
+          </tbody>
+        </table>
+      </div>
     );
   }
 }
 
-export default AllWords
+export default withRouter(AllWords)

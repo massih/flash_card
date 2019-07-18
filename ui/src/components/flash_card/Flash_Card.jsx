@@ -3,70 +3,104 @@ import Button from "../commons/Button";
 import TextField from "../commons/TextField";
 
 class FlashCard extends Component {
+
+  static FETCH_FLASH_CARD_URL = 'http://localhost:8000/api/flashcard';
+  static UPDATE_FLASH_CARD_URL = 'http://localhost:8000/api/card/';
+
   constructor(props, context) {
     super(props, context);
     this.state = {
-      flash_card: {},
-      meaning_user_input: '',
-      result_icon: null,
-      show_answer: false
+      flashCard: {},
+      meaningUserInput: '',
+      resultIcon: null,
+      showAnswer: false
     };
-    this.get_flash_card_data();
+    this.getFlashCardData();
   }
-
-  get_flash_card_data() {
-    if (this.props.flash_card) {
-      this.setState({flash_card: this.props.flash_card});
-      return;
-    }
-
-    let url = 'http://localhost:8000/api/flashcard';
-    fetch(url, {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json'}
-    }).then(res => res.json())
-      .then(response => {
-        console.log('response: {}', response);
-        this.setState({flash_card: response});
-      })
-      .catch(error => console.log('Error:', error));
-  }
-
-  revealAnswer() {
-    return (this.state.show_answer) ? '' : 'hide';
-  }
-
-  buttonOnclick = () => {
-    let flash_card = this.state.flash_card;
-    flash_card.counter += 1;
-    let result = this.state.meaning_user_input.toLowerCase() === flash_card.word_meaning.toLowerCase();
-
-    flash_card.counter_incorrect = (result) ? flash_card.counter_incorrect : flash_card.counter_incorrect +1;
-    const icon = <i className="material-icons">{(result) ? 'thumb_up' : 'thumb_down'}</i>;
-
-    this.setState({show_answer: true});
-    this.setState({result_icon: icon})
-  };
 
   textfieldOnchange = (textfield, value) => {
     this.setState({[textfield]: value});
   };
 
+  revealAnswer() {
+    return (this.state.showAnswer) ? '' : 'hide';
+  }
+
+  getFlashCardData() {
+    console.log('IN GET FLASH CARD!!!!');
+
+    if (this.props.location.state && this.props.location.state.hasOwnProperty('flashCard')) {
+      let fc = this.props.location.state.flashCard;
+      this.setState({flashCard: fc});
+      return;
+    }
+
+    fetch(FlashCard.FETCH_FLASH_CARD_URL, {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json'}
+    }).then(res => res.json())
+      .then(response => {
+        console.log('response: {}', response);
+        this.setState({flashCard: response});
+      })
+      .catch(error => console.log('Error:', error));
+  }
+
+  updateFlashCard(flashCard) {
+    console.log('Flashcard to update :', flashCard);
+    fetch(FlashCard.UPDATE_FLASH_CARD_URL + flashCard.id, {
+      method: 'PUT',
+      body: JSON.stringify(flashCard),
+      headers: {'Content-Type': 'application/json'}
+    }).then(res => res.json())
+      .then(response => console.log('Success:', response))
+      .catch(error => console.log('Error:', error));
+  }
+
+  fetchNextFlashCard() {
+    this.setState({
+      meaningUserInput: '',
+      showAnswer: false,
+      resultIcon: null,
+      flashCard: {}
+    });
+    this.getFlashCardData();
+  }
+
+
+  buttonOnclick = () => {
+    let flashCard = this.state.flashCard;
+    flashCard.counter += 1;
+    let result = this.state.meaningUserInput.toLowerCase() === flashCard.word_meaning.toLowerCase();
+
+    flashCard.counter_incorrect = (result) ? flashCard.counter_incorrect : flashCard.counter_incorrect + 1;
+    flashCard.update_last_visit = true;
+    const icon = <i className="material-icons">{(result) ? 'thumb_up' : 'thumb_down'}</i>;
+
+    this.setState({
+      showAnswer: true,
+      resultIcon: icon
+    });
+    this.updateFlashCard(flashCard);
+    setTimeout(() => this.fetchNextFlashCard(), 5000);
+  };
+
   render() {
-    let flash_card = this.state.flash_card;
+    let flashCard = this.state.flashCard;
+    console.log('in RENDER ', flashCard);
     return (
       <div className="card cyan darken-4 large">
         <div className="card-content white-text">
-          <h1>{flash_card.word_original}</h1>
+          <h1>{flashCard.word_original}</h1>
           <TextField
-            id='meaning_user_input'
-            value={this.state.meaning_user_input}
+            id='meaningUserInput'
+            value={this.state.meaningUserInput}
             onChange={this.textfieldOnchange}
             label='Word Meaning'
             large
           />
-          <p>{this.state.result_icon}</p>
-          <h4 className={this.revealAnswer()}>The answer : {flash_card.word_meaning}</h4>
+          <p>{this.state.resultIcon}</p>
+          <h4 className={this.revealAnswer()}>The answer : {flashCard.word_meaning}</h4>
         </div>
         <div className="card-action">
           <Button onClick={this.buttonOnclick} icon="done" text="Done" color="green darken-2" large/>

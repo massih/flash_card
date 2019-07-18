@@ -4,5 +4,6 @@
   "word_meaning": "",
   "counter": 0,
   "counter_incorrect": 0,
-  "update_last_visit": true
+  "update_last_visit": true,
+  "last_visit": ""
 }
