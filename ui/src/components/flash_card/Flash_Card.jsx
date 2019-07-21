@@ -27,14 +27,6 @@ class FlashCard extends Component {
   }
 
   getFlashCardData() {
-    console.log('IN GET FLASH CARD!!!!');
-
-    if (this.props.location.state && this.props.location.state.hasOwnProperty('flashCard')) {
-      let fc = this.props.location.state.flashCard;
-      this.setState({flashCard: fc});
-      return;
-    }
-
     fetch(FlashCard.FETCH_FLASH_CARD_URL, {
       method: 'GET',
       headers: {'Content-Type': 'application/json'}
@@ -87,7 +79,6 @@ class FlashCard extends Component {
 
   render() {
     let flashCard = this.state.flashCard;
-    console.log('in RENDER ', flashCard);
     return (
       <div className="card cyan darken-4 large">
         <div className="card-content white-text">

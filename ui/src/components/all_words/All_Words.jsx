@@ -30,7 +30,7 @@ class AllWords extends Component {
     console.log('edit button clicked with => ', rowData);
     this.props.history.push(
       {
-        pathname: '/flashCard',
+        pathname: '/New',
         state: {flashCard: rowData}
       });
     // fetch('http://localhost:8000/api/cards', {
