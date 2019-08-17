@@ -16,15 +16,15 @@ HOST = '127.0.0.1'
 PORT = 8000
 
 
-def test(db: DataBaseHandler):
-    # TODO remove later
-    card = Card(word_original='hej', word_meaning='hello')
-    db.add_card(card)
-    card2 = Card(word_original='jätte', word_meaning='gigantic')
-    db.add_card(card2)
-    all_words = db.get_all_cards()
-    [print(word) for word in all_words]
-
+# def test(db: DataBaseHandler):
+#     # TODO remove later
+#     card = Card(word_original='hej', word_meaning='hello')
+#     db.add_card(card)
+#     card2 = Card(word_original='jätte', word_meaning='gigantic')
+#     db.add_card(card2)
+#     all_words = db.get_all_cards()
+#     [print(word) for word in all_words]
+#
 
 def main():
     setup_logging()

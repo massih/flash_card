@@ -21,9 +21,9 @@ class Main extends Component {
           <nav className="margin-bottom-10">
             <div className="nav-wrapper teal darken-4 center-align">
               <ul id="nav-mobile" className="center hide-on-med-and-down">
-                <li><NavLink to="/newword">Add new words</NavLink></li>
-                <li><NavLink to="/flashcard">Flash cards</NavLink></li>
-                <li><NavLink to="/allwords">All my words</NavLink></li>
+                <li><NavLink activeClassName="active-nav-link" to="/newword">Add new words</NavLink></li>
+                <li><NavLink activeClassName="active-nav-link" to="/flashcard">Flash cards</NavLink></li>
+                <li><NavLink activeClassName="active-nav-link" to="/allwords">All my words</NavLink></li>
               </ul>
             </div>
           </nav>
