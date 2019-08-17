@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import Button from "../commons/Button";
+import {withRouter} from "react-router-dom";
 
 class AllWords extends Component {
+  static FETCH_ALL_CARDS_URL = 'http://localhost:8000/api/cards';
 
   constructor(props) {
     super(props);
     this.state = {};
-    this.headers = ['Word', 'Meaning', 'Actions'];
   }
 
   componentDidMount() {
-    let url = 'http://localhost:8000/api/cards';
-    fetch(url, {
+    fetch(AllWords.FETCH_ALL_CARDS_URL, {
       method: 'GET',
       headers: {'Content-Type': 'application/json'}
     }).then(res => res.json())
@@ -28,6 +28,11 @@ class AllWords extends Component {
   editButtonOnclick(rowId) {
     let rowData = this.state.tableData[rowId];
     console.log('edit button clicked with => ', rowData);
+    this.props.history.push(
+      {
+        pathname: '/New',
+        state: {flashCard: rowData}
+      });
     // fetch('http://localhost:8000/api/cards', {
     //   method: 'POST',
     //   body: JSON.stringify(this.state),
@@ -38,7 +43,6 @@ class AllWords extends Component {
   }
 
   deleteButtonOnclick(rowId) {
-    console.log('delete button clicked for id => ', rowId);
     const url = 'http://localhost:8000/api/card/' + rowId;
     fetch(url, {
       method: 'DELETE',
@@ -46,11 +50,36 @@ class AllWords extends Component {
     }).then(() => {
       let tableData = this.state.tableData;
       delete tableData[rowId];
-      this.setState({'tableData': tableData})
-    })
-      .catch(error => console.log('Error:', error));
+      this.setState({'tableData': tableData});
+      this.addNotification('delete', 'success', 'Gone!')
+    }).catch(error => {
+      console.log('Error:', error);
+      this.addNotification('delete', 'danger', error.toString());
+    });
   }
 
+  addNotification(operation, type, message) {
+    let properties = AllWords.getNotificationProperties(operation, type, message);
+    this.props.notificationRef.current.addNotification({
+      title: properties.title,
+      message: message,
+      type: properties.type,
+      insert: "top",
+      container: "bottom-center",
+      animationIn: ["animated", "fadeIn"],
+      animationOut: ["animated", "fadeOut"],
+      dismiss: {duration: 5000},
+      dismissable: {click: true}
+    });
+  }
+
+  static getNotificationProperties(operation, type, message) {
+    return {
+      title: ((type === 'success') ? 'Successfully ' : 'Failed to ') + operation,
+      type: type,
+      message: message
+    };
+  }
 
   render() {
     if (!this.state.tableData) {
@@ -60,7 +89,8 @@ class AllWords extends Component {
     if (!Object.keys(this.state.tableData).length) {
       return (
         <div className="section">
-          <p>You haven't add any words yet! Click on "New Word" to start!</p>
+          <h3>You haven't add any words yet!</h3>
+          <p>Click on "New Word" to start!</p>
         </div>
       );
     }
@@ -72,6 +102,8 @@ class AllWords extends Component {
           <tr>
             <th>Word</th>
             <th>Meaning</th>
+            <th>Incorrect Answers</th>
+            <th>Last Visit</th>
             <th>Actions</th>
           </tr>
           </thead>
@@ -80,6 +112,8 @@ class AllWords extends Component {
             <tr>
               <td>{this.state.tableData[id].word_original}</td>
               <td>{this.state.tableData[id].word_meaning}</td>
+              <td>{this.state.tableData[id].counter_incorrect}</td>
+              <td>{this.state.tableData[id].last_visit}</td>
               <td>
                 <Button color="transparent" icon="edit" onClick={() => this.editButtonOnclick(id)}/>
                 <Button color="transparent" icon="delete" onClick={() => this.deleteButtonOnclick(id)}/>
@@ -94,4 +128,4 @@ class AllWords extends Component {
   }
 }
 
-export default AllWords
+export default withRouter(AllWords)

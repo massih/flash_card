@@ -69,3 +69,7 @@ class DataBaseHandler:
         session.add(current_card)
         session.commit()
         return current_card
+
+    def get_card_latest_used(self) -> Card:
+        session = self.session()
+        return session.query(Card).order_by(Card.last_visit.asc()).first()

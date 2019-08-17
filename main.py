@@ -6,7 +6,9 @@ import falcon
 
 from api.databasehandler import DataBaseHandler, Card
 from api.logs.setup import setup_logging
-from api.resources.card import CardsResources, CardResource
+from api.resources.card import CardResource
+from api.resources.cards import CardsResources
+from api.resources.flash_card import FlashCardResource
 
 logger = logging.getLogger(__name__)
 CWD = os.path.dirname(os.path.realpath(__file__))
@@ -36,11 +38,13 @@ def main():
     # test(db)
     card_resource = CardResource(db)
     cards_resource = CardsResources(db)
+    flash_card_resource = FlashCardResource(db)
     app = falcon.API()
     app.add_static_route('/', build_directory, fallback_filename=index_file)
     app.add_static_route('/static', static_files)
     app.add_route('/api/cards', cards_resource)
     app.add_route('/api/card/{card_id}', card_resource)
+    app.add_route('/api/flashcard', flash_card_resource)
     logger.info('Setup is completed!')
 
     httpd = simple_server.make_server(HOST, PORT, app)

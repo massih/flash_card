@@ -7,21 +7,49 @@ class NewWord extends Component {
   constructor(props) {
     super(props);
     this.state = {word_original: '', word_meaning: ''};
+    this.notification_template = {
+      success: {
+        title: 'Successfully Saved!',
+        type: 'success'
+      },
+      error: {
+        title: 'Could not save!',
+        type: 'danger'
+      }
+    };
   }
 
   button_onclick = () => {
-    console.log(this.state);
     // TODO AXIOS
-
     fetch('http://localhost:8000/api/cards', {
       method: 'POST',
       body: JSON.stringify(this.state),
       headers: {'Content-Type': 'application/json'}
     }).then(res => res.json())
-      .then(response => console.log('Success:', JSON.stringify(response)))
-      .catch(error => console.log('Error:', error));
-    this.clearTextfields();
+        .then(response => {
+          this.clearTextfields();
+          this.addNotification('success', response["word_original"] + " => " + response["word_meaning"]);
+        })
+        .catch(error => {
+          console.log('Error:', error);
+          this.addNotification('error', error.toString());
+        });
   };
+
+  addNotification(type, message) {
+    let properties = this.notification_template[type];
+    this.props.notificationRef.current.addNotification({
+      title: properties.title,
+      message: message,
+      type: properties.type,
+      insert: "top",
+      container: "bottom-center",
+      animationIn: ["animated", "fadeIn"],
+      animationOut: ["animated", "fadeOut"],
+      dismiss: {duration: 5000},
+      dismissable: {click: true}
+    });
+  }
 
   textfieldOnchange = (textfield, value) => {
     this.setState({[textfield]: value});
@@ -34,15 +62,15 @@ class NewWord extends Component {
 
   render() {
     return (
-      <div>
-        <div className="row">
-          <TextField id={'word_original'} value={this.state.word_original} onChange={this.textfieldOnchange} label={'Word'}/>
-          <TextField id={'word_meaning'} value={this.state.word_meaning} onChange={this.textfieldOnchange} label={'Meaning'}/>
+        <div>
+          <div className="row">
+            <TextField id={'word_original'} value={this.state.word_original} onChange={this.textfieldOnchange} label={'Word'}/>
+            <TextField id={'word_meaning'} value={this.state.word_meaning} onChange={this.textfieldOnchange} label={'Meaning'}/>
+          </div>
+          <div className="row">
+            <Button onClick={this.button_onclick} icon="save" text="Save" color="teal darken-2" large/>
+          </div>
         </div>
-        <div className="row">
-          <Button onClick={this.button_onclick} icon="save" text="Save" color="teal darken-2" large/>
-        </div>
-      </div>
     )
   }
 }
