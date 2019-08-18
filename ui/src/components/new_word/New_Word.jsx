@@ -31,8 +31,6 @@ class NewWord extends Component {
   checkCardForUpdate() {
     if (((this.props.history.location || {}).state || {}).flashCard) {
       let passedCard = this.props.history.location.state.flashCard;
-      console.log("passedCard");
-      console.log(passedCard);
       this.setState({
         card_to_update: passedCard,
         word_original: passedCard.word_original,

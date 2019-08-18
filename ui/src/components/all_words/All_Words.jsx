@@ -27,7 +27,6 @@ class AllWords extends Component {
 
   editButtonOnclick(rowId) {
     let rowData = this.state.tableData[rowId];
-    console.log('edit button clicked with => ', rowData);
     this.props.history.push(
       {
         pathname: '/newword',
