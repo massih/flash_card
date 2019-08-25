@@ -13,10 +13,28 @@ class FlashCard extends Component {
       flashCard: {},
       meaningUserInput: '',
       resultIcon: null,
-      showAnswer: false
+      showAnswer: false,
+      spinner: null,
     };
     this.getFlashCardData();
   }
+
+  spinner = () => {
+    return (
+      <div className="preloader-wrapper active">
+        <div className="spinner-layer spinner-blue-only">
+          <div className="circle-clipper left">
+            <div className="circle"></div>
+          </div>
+          <div className="gap-patch">
+            <div className="circle"></div>
+          </div>
+          <div className="circle-clipper right">
+            <div className="circle"></div>
+          </div>
+        </div>
+      </div>);
+  };
 
   textfieldOnchange = (textfield, value) => {
     this.setState({[textfield]: value});
@@ -32,14 +50,14 @@ class FlashCard extends Component {
       headers: {'Content-Type': 'application/json'}
     }).then(res => res.json())
       .then(response => {
-        console.log('response: {}', response);
+        // console.log('response: {}', response);
         this.setState({flashCard: response});
       })
       .catch(error => console.log('Error:', error));
   }
 
   updateFlashCard(flashCard) {
-    console.log('Flashcard to update :', flashCard);
+    // console.log('Flashcard to update :', flashCard);
     fetch(FlashCard.UPDATE_FLASH_CARD_URL + flashCard.id, {
       method: 'PUT',
       body: JSON.stringify(flashCard),
@@ -54,6 +72,7 @@ class FlashCard extends Component {
       meaningUserInput: '',
       showAnswer: false,
       resultIcon: null,
+      spinner: null,
       flashCard: {}
     });
     this.getFlashCardData();
@@ -71,7 +90,8 @@ class FlashCard extends Component {
 
     this.setState({
       showAnswer: true,
-      resultIcon: icon
+      resultIcon: icon,
+      spinner: this.spinner()
     });
     this.updateFlashCard(flashCard);
     setTimeout(() => this.fetchNextFlashCard(), 5000);
@@ -92,6 +112,7 @@ class FlashCard extends Component {
           />
           <p>{this.state.resultIcon}</p>
           <h4 className={this.revealAnswer()}>The answer : {flashCard.word_meaning}</h4>
+          {this.state.spinner}
         </div>
         <div className="card-action">
           <Button onClick={this.buttonOnclick} icon="done" text="Done" color="green darken-2" large/>

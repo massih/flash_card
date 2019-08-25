@@ -89,7 +89,7 @@ class AllWords extends Component {
 
     return (
       <div className="blue-grey darken-2">
-        <table className="highlight centered responsive-table">
+        <table className="responsive-table highlight centered">
           <thead>
           <tr>
             <th>Word</th>
