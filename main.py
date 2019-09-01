@@ -4,11 +4,12 @@ from wsgiref import simple_server
 
 import falcon
 
-from api.databasehandler import DataBaseHandler, Card
+from api.databasehandler import DataBaseHandler
 from api.logs.setup import setup_logging
 from api.resources.card import CardResource
 from api.resources.cards import CardsResources
 from api.resources.flash_card import FlashCardResource
+from api.middlewares.RequireJson import RequireJSON
 
 logger = logging.getLogger(__name__)
 CWD = os.path.dirname(os.path.realpath(__file__))
@@ -39,7 +40,9 @@ def main():
     card_resource = CardResource(db)
     cards_resource = CardsResources(db)
     flash_card_resource = FlashCardResource(db)
-    app = falcon.API()
+    app = falcon.API(
+        middleware=[RequireJSON()]
+    )
     app.add_static_route('/', build_directory, fallback_filename=index_file)
     app.add_static_route('/static', static_files)
     app.add_route('/api/cards', cards_resource)
