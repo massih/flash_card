@@ -34,12 +34,12 @@ class Main extends Component {
           </div>
         </nav>
 
-        <ul id="nav-mobile" className="sidenav" ref={(sidenav) => this.sideNav=sidenav}>
+        {/* Only for responsiveness of navbar*/}
+        <ul id="nav-mobile" className="sidenav" ref={(sidenav) => this.sideNav = sidenav}>
           <li><NavLink activeClassName="active-nav-link" to="/newword">Add new words</NavLink></li>
           <li><NavLink activeClassName="active-nav-link" to="/flashcard">Flash cards</NavLink></li>
           <li><NavLink activeClassName="active-nav-link" to="/allwords">All my words</NavLink></li>
         </ul>
-
 
         <div className="container center-align">
           <div className="row">
