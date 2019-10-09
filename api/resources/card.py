@@ -14,13 +14,13 @@ class CardResource:
         self.logger = logging.getLogger(__name__)
 
     def on_get(self, req, resp, card_id):
-        self.logger.info(f'received GET call for {card_id}')
+        self.logger.debug(f'received GET call for {card_id}')
         card = self.db.get_card_by_id(card_id)
         resp.media = card.to_json()
 
     @validate(load_schema('card_update'))
     def on_put(self, req, resp, card_id):
-        self.logger.info(f'received PUT call for {card_id}')
+        self.logger.debug(f'received PUT call for {card_id}')
         data = req.media
         card = Card(
             id=data.get('id'),
@@ -35,6 +35,6 @@ class CardResource:
         resp.media = updated_card.to_json()
 
     def on_delete(self, req, resp, card_id):
-        self.logger.info(f'received DELETE call for {card_id}')
+        self.logger.debug(f'received DELETE call for {card_id}')
         self.db.delete_card(card_id)
         resp.status = falcon.HTTP_200
