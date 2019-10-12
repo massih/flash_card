@@ -1,1 +1,1 @@
-buildnodeapp:   ./build_nodeApp.sh
+web:   ./build_nodeApp.sh
