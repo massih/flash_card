@@ -1,0 +1,1 @@
+buildnodeapp:   ./build_nodeApp.sh
