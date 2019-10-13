@@ -1,1 +1,1 @@
-web:   ./build_nodeApp.sh
+web:   gunicorn api:main
