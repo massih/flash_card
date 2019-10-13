@@ -13,7 +13,7 @@ from api.middlewares.RequireJson import RequireJSON
 
 logger = logging.getLogger(__name__)
 CWD = os.path.dirname(os.path.realpath(__file__))
-HOST = '127.0.0.1'
+HOST = '0.0.0.0'
 PORT = int(os.environ.get('PORT', 8000))
 
 
