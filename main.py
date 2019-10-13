@@ -22,7 +22,7 @@ def main():
     logger.info('Starting the app')
 
     db = DataBaseHandler()
-    build_directory = os.path.join(CWD, 'ui/build')
+    build_directory = os.path.join(CWD, 'build')
     index_file = os.path.join(build_directory, 'index.html')
     static_files = os.path.join(build_directory, 'static')
 
