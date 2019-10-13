@@ -1,1 +1,1 @@
-cd ./ui && npm install && npm run build
+cd ./ui && npm install && npm run build && cd .. && python main.py
