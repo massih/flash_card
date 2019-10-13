@@ -14,7 +14,7 @@ from api.middlewares.RequireJson import RequireJSON
 logger = logging.getLogger(__name__)
 CWD = os.path.dirname(os.path.realpath(__file__))
 HOST = '127.0.0.1'
-PORT = os.environ.get('PORT', 8000)
+PORT = int(os.environ.get('PORT', 8000))
 
 
 def main():
